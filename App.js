@@ -5,84 +5,33 @@ import {
   View,
   TextInput,
   FlatList,
+  ImageBackground,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import GoalItem from "./components/GoalItem";
-import GoalInput from "./components/GoalInput";
+import StartGameScreen from "./screens/StartGameScreen";
 
-export default function App() { 
-  const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [goalLists, setGoalList] = useState([]);
-
-  function startAddGoalHandler(){
-    setModalIsVisible(true);
-  }
-
-  function endAddGoalHandler(){
-    setModalIsVisible(false);
-  }
-
-  function addGoalHandler(goal) {
-    setGoalList((currentGoals) => [
-      ...currentGoals,
-      { text: goal, id: Math.random().toString() },
-    ]);
-    endAddGoalHandler();
-  }
-
-  function deleteGoalHandler(id) {
-    console.log("Delete id " + id);
-    setGoalList((currentGoals) => {
-      return currentGoals.filter((item) => item.id !== id);
-    });
-  }
-
+export default function App() {
   return (
-    <>
-      <StatusBar style="inverted" />
-    
-      <View style={styles.appContainer}>
-        <Button
-          title="Add new goal"
-          color="#5e0acc"
-          onPress={startAddGoalHandler}
-        />
-        {modalIsVisible && (
-          <GoalInput
-            onAddGoal={addGoalHandler}
-            visible={modalIsVisible}
-            onCancel={endAddGoalHandler}
-          />
-        )}
-        <View style={styles.goalsContainer}>
-          <FlatList
-            data={goalLists}
-            renderItem={(itemData) => {
-              return (
-                <GoalItem
-                  text={itemData.item.text}
-                  id={itemData.item.id}
-                  onDeletePressed={deleteGoalHandler}
-                />
-              );
-            }}
-            alwaysBounceVertical={false}
-          />
-        </View>
-      </View>
-    </>
+    <LinearGradient style={styles.rootScreen} colors={["#4e0329", "#ddb52f"]}>
+      <ImageBackground
+        source={require("./assets/images/dice.jpg")}
+        resizeMethod="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImageStyle}
+      >
+        <StartGameScreen />
+      </ImageBackground>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  appContainer: {
-    paddingTop: 50,
-    paddingHorizontal: 16,
+  rootScreen: {
     flex: 1,
-    backgroundColor :'#1e085a'
   },
-  goalsContainer: {
-    flex: 4,
-  },
+  backgroundImageStyle : {
+    opacity : 0.15
+  }
 });
